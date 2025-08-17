@@ -1,10 +1,11 @@
+
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import { AuthProvider } from '@/hooks/use-auth';
-
+import AppHeader from '@/components/app-header';
 
 export const metadata: Metadata = {
   title: 'Azoya',
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body>
         <AuthProvider>
           <div className="flex flex-col min-h-screen">
+            <AppHeader />
             <main className="flex-grow">
               {children}
             </main>

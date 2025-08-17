@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ArrowRight, Download, Loader, Eye, Wand2, LogOut, User } from "lucide-react";
+import { ArrowRight, Download, Loader, Eye, Wand2, LogOut, User, Zap, Code, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,7 +19,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/hooks/use-auth";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const formSchema = z.object({
   prompt: z.string().min(10, {
@@ -31,7 +30,7 @@ export default function Home() {
   const [generatedCode, setGeneratedCode] = useState<GenerateWebsiteCodeOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const { user, loading: authLoading, signOut } = useAuth();
+  const { user, loading: authLoading } = useAuth();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,6 +51,7 @@ export default function Home() {
         title: "Website Generated!",
         description: "Your new website is ready for preview.",
       });
+      document.getElementById('preview-section')?.scrollIntoView({ behavior: 'smooth' });
     } else {
       toast({
         variant: "destructive",
@@ -103,82 +103,102 @@ export default function Home() {
   
   const srcDoc = generatedCode ? `<html><head><style>${generatedCode.css}</style></head><body>${generatedCode.html}<script>${generatedCode.javascript || ''}</script></body></html>` : '';
 
-  const AuthButton = () => {
-    if (authLoading) {
-      return <Skeleton className="h-10 w-24" />;
-    }
-    if (user) {
-      return (
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline">
-              <User className="mr-2 h-4 w-4" />
-              Account
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-56">
-            <div className="grid gap-4">
-              <div className="space-y-2">
-                <p className="text-sm font-medium leading-none">
-                  Signed in as
-                </p>
-                <p className="text-sm text-muted-foreground truncate">
-                  {user.email}
-                </p>
-              </div>
-              <Button variant="destructive" onClick={signOut}>
-                <LogOut className="mr-2 h-4 w-4" />
-                Sign Out
-              </Button>
-            </div>
-          </PopoverContent>
-        </Popover>
-      );
-    }
-    return (
-      <div className="flex gap-2">
-        <Button asChild variant="outline">
-          <Link href="/login">Login</Link>
-        </Button>
-        <Button asChild>
-          <Link href="/signup">Sign Up</Link>
-        </Button>
-      </div>
-    );
-  };
+  const features = [
+    {
+      icon: <Zap className="h-8 w-8 text-primary" />,
+      title: "Instant Generation",
+      description: "Go from a simple text prompt to a fully functional website in seconds. No more waiting, just creating.",
+    },
+    {
+      icon: <Code className="h-8 w-8 text-primary" />,
+      title: "Clean, Exportable Code",
+      description: "We generate standard HTML, CSS, and JavaScript. Download the source code and host it anywhere.",
+    },
+    {
+      icon: <Rocket className="h-8 w-8 text-primary" />,
+      title: "Powered by Gemini",
+      description: "Leveraging Google's state-of-the-art AI to understand your vision and build it with precision.",
+    },
+  ];
+
 
   return (
-    <div className="min-h-screen bg-background dark:bg-grid-zinc-800/50">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto p-4 md:p-8">
-        <header className="flex justify-between items-center py-4">
-          <div className="flex items-center gap-2">
-            <Wand2 className="w-8 h-8 text-primary" />
-            <h1 className="text-2xl font-bold">
-              Azoya
-            </h1>
-          </div>
-          <AuthButton />
-        </header>
-
         <motion.section 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center my-12"
+          className="text-center my-16"
         >
-          <h2 className="text-5xl md:text-6xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
             Your ideas, instantly coded.
-          </h2>
-          <p className="text-lg md:text-xl text-muted-foreground mt-4 max-w-2xl mx-auto">Powered by Gemini AI, Azoya helps you generate websites in seconds.</p>
+          </h1>
+          <p className="text-lg md:text-xl text-muted-foreground mt-6 max-w-3xl mx-auto">
+            Welcome to Azoya, the AI-powered platform that turns your descriptions into beautiful, functional websites. Just describe what you want, and watch it come to life.
+          </p>
+          <Button asChild size="lg" className="mt-8 font-semibold">
+            <Link href="#generator">Start Generating <ArrowRight className="ml-2" /></Link>
+          </Button>
         </motion.section>
 
-        <main className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        {/* Features Section */}
+        <section className="my-24">
+          <div className="grid md:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <motion.div 
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="text-center p-6 bg-card border rounded-lg"
+              >
+                <div className="flex justify-center items-center mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-semibold">{feature.title}</h3>
+                <p className="text-muted-foreground mt-2">{feature.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* How it works Section */}
+        <section className="my-24 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">How It Works</h2>
+            <p className="text-muted-foreground mb-12">Create your website in three simple steps.</p>
+            <div className="grid md:grid-cols-3 gap-8 relative">
+              {/* Dashed lines for larger screens */}
+              <div className="hidden md:block absolute top-1/2 left-0 w-full h-px -translate-y-1/2">
+                  <svg width="100%" height="2">
+                      <line x1="0" y1="1" x2="100%" y2="1" strokeWidth="2" strokeDasharray="8, 8" className="stroke-border" />
+                  </svg>
+              </div>
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.1 }} viewport={{ once: true }} className="flex flex-col items-center p-6 bg-card border rounded-lg z-10">
+                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-primary text-primary-foreground text-2xl font-bold mb-4">1</div>
+                  <h3 className="text-xl font-semibold">Describe</h3>
+                  <p className="text-muted-foreground mt-2">Write a detailed prompt about the website you envision.</p>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.2 }} viewport={{ once: true }} className="flex flex-col items-center p-6 bg-card border rounded-lg z-10">
+                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-primary text-primary-foreground text-2xl font-bold mb-4">2</div>
+                  <h3 className="text-xl font-semibold">Generate</h3>
+                  <p className="text-muted-foreground mt-2">Our AI analyzes your prompt and generates the code.</p>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.3 }} viewport={{ once: true }} className="flex flex-col items-center p-6 bg-card border rounded-lg z-10">
+                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-primary text-primary-foreground text-2xl font-bold mb-4">3</div>
+                  <h3 className="text-xl font-semibold">Launch</h3>
+                  <p className="text-muted-foreground mt-2">Preview your site, make tweaks, and download the code.</p>
+              </motion.div>
+            </div>
+        </section>
+
+
+        <main id="generator" className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start my-24 scroll-mt-20">
           <motion.section
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Card className="sticky top-8 shadow-lg backdrop-blur-sm bg-background/80">
+            <Card className="sticky top-20 shadow-lg backdrop-blur-sm bg-background/80">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                   <CardHeader>
@@ -224,10 +244,11 @@ export default function Home() {
           </motion.section>
           
           <motion.section
+            id="preview-section"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="min-h-[60vh]"
+            className="min-h-[60vh] scroll-mt-20"
           >
             <AnimatePresence mode="wait">
             {isLoading ? (
@@ -259,7 +280,7 @@ export default function Home() {
               </motion.div>
             ) : (
               <motion.div key="result" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <Card className="shadow-lg">
+                <Card className="shadow-lg sticky top-20">
                   <Tabs defaultValue="preview" className="w-full">
                     <CardHeader className="flex flex-row items-center justify-between">
                         <TabsList>
