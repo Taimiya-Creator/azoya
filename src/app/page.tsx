@@ -1,10 +1,12 @@
+
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ArrowRight, Download, Loader, Eye, Wand2 } from "lucide-react";
+import { ArrowRight, Download, Loader, Eye, Wand2, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,6 +18,8 @@ import CodeViewer from "@/components/code-viewer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/hooks/use-auth";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const formSchema = z.object({
   prompt: z.string().min(10, {
@@ -27,6 +31,7 @@ export default function Home() {
   const [generatedCode, setGeneratedCode] = useState<GenerateWebsiteCodeOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { user, loading: authLoading, signOut } = useAuth();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,6 +59,18 @@ export default function Home() {
         description: result.error || "An unknown error occurred.",
       });
     }
+  };
+
+  const handleDownload = () => {
+    if (!user) {
+      toast({
+        variant: "destructive",
+        title: "Authentication Required",
+        description: "You must be logged in to download the source code.",
+      });
+      return;
+    }
+    downloadCode();
   };
 
   const downloadCode = () => {
@@ -86,23 +103,74 @@ export default function Home() {
   
   const srcDoc = generatedCode ? `<html><head><style>${generatedCode.css}</style></head><body>${generatedCode.html}<script>${generatedCode.javascript || ''}</script></body></html>` : '';
 
+  const AuthButton = () => {
+    if (authLoading) {
+      return <Skeleton className="h-10 w-24" />;
+    }
+    if (user) {
+      return (
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline">
+              <User className="mr-2 h-4 w-4" />
+              Account
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-56">
+            <div className="grid gap-4">
+              <div className="space-y-2">
+                <p className="text-sm font-medium leading-none">
+                  Signed in as
+                </p>
+                <p className="text-sm text-muted-foreground truncate">
+                  {user.email}
+                </p>
+              </div>
+              <Button variant="destructive" onClick={signOut}>
+                <LogOut className="mr-2 h-4 w-4" />
+                Sign Out
+              </Button>
+            </div>
+          </PopoverContent>
+        </Popover>
+      );
+    }
+    return (
+      <div className="flex gap-2">
+        <Button asChild variant="outline">
+          <Link href="/login">Login</Link>
+        </Button>
+        <Button asChild>
+          <Link href="/signup">Sign Up</Link>
+        </Button>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-background dark:bg-grid-zinc-800/50">
       <div className="container mx-auto p-4 md:p-8">
-        <motion.header 
+        <header className="flex justify-between items-center py-4">
+          <div className="flex items-center gap-2">
+            <Wand2 className="w-8 h-8 text-primary" />
+            <h1 className="text-2xl font-bold">
+              Azoya
+            </h1>
+          </div>
+          <AuthButton />
+        </header>
+
+        <motion.section 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="text-center my-12"
         >
-          <div className="inline-block rounded-full bg-primary/10 p-2 mb-4">
-            <Wand2 className="w-8 h-8 text-primary" />
-          </div>
-          <h1 className="text-5xl md:text-6xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
-            Azoya
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground mt-4 max-w-2xl mx-auto">Your ideas, instantly coded by Gemini AI.</p>
-        </motion.header>
+          <h2 className="text-5xl md:text-6xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
+            Your ideas, instantly coded.
+          </h2>
+          <p className="text-lg md:text-xl text-muted-foreground mt-4 max-w-2xl mx-auto">Powered by Gemini AI, Azoya helps you generate websites in seconds.</p>
+        </motion.section>
 
         <main className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           <motion.section
@@ -200,7 +268,7 @@ export default function Home() {
                           <TabsTrigger value="css">CSS</TabsTrigger>
                           {generatedCode.javascript && <TabsTrigger value="js">JS</TabsTrigger>}
                         </TabsList>
-                        <Button onClick={downloadCode} variant="outline">
+                        <Button onClick={handleDownload} variant="outline" disabled={!user && !authLoading}>
                           <Download className="mr-2 h-4 w-4" />
                           Download
                         </Button>
