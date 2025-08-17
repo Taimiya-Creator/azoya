@@ -63,14 +63,14 @@ export default function AppHeader() {
             <Wand2 className="h-6 w-6 text-primary" />
             <span className="font-bold">Azoya</span>
           </Link>
+          <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+            <Link href="/" className="transition-colors hover:text-foreground/80 text-foreground">Home</Link>
+            <Link href="/about" className="transition-colors hover:text-foreground/80 text-foreground/60">About</Link>
+            <Link href="/pricing" className="transition-colors hover:text-foreground/80 text-foreground/60">Pricing</Link>
+            <Link href="/contact" className="transition-colors hover:text-foreground/80 text-foreground/60">Contact</Link>
+          </nav>
         </div>
-        <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-            <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-              <Link href="/" className="transition-colors hover:text-foreground/80 text-foreground">Home</Link>
-              <Link href="/about" className="transition-colors hover:text-foreground/80 text-foreground/60">About</Link>
-              <Link href="/pricing" className="transition-colors hover:text-foreground/80 text-foreground/60">Pricing</Link>
-              <Link href="/contact" className="transition-colors hover:text-foreground/80 text-foreground/60">Contact</Link>
-            </nav>
+        <div className="flex flex-1 items-center justify-end space-x-2">
           <AuthButton />
         </div>
       </div>
