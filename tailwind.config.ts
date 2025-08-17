@@ -10,9 +10,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
-        code: ['monospace'],
+        sans: ['var(--font-geist-sans)'],
+        mono: ['var(--font-geist-mono)'],
       },
       colors: {
         background: 'hsl(var(--background))',
@@ -93,6 +92,13 @@ export default {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
+      backgroundImage: {
+        'grid-zinc-200/50': "linear-gradient(white 1px, transparent 1px), linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, rgb(244 244 245 / 0.4) 1px, transparent 1px), linear-gradient(to right, rgb(244 244 245 / 0.4) 1px, transparent 1px)",
+        'grid-zinc-800/50': "linear-gradient(black 1px, transparent 1px), linear-gradient(to right, black 1px, transparent 1px), linear-gradient(to bottom, rgb(39 39 42 / 0.4) 1px, transparent 1px), linear-gradient(to right, rgb(39 39 42 / 0.4) 1px, transparent 1px)"
+      },
+       backgroundSize: {
+        'grid': '40px 40px, 40px 40px, 20px 20px, 20px 20px',
+      }
     },
   },
   plugins: [require('tailwindcss-animate')],
