@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ArrowRight, Download, Loader, Eye, Wand2, LogOut, User, Zap, Code, Rocket } from "lucide-react";
+import { ArrowRight, Download, Loader, Eye, Wand2, LogOut, User, Zap, Code, Rocket, Navigation } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -323,6 +323,34 @@ export default function Home() {
             </AnimatePresence>
           </motion.section>
         </main>
+
+        {/* Navigation Section */}
+        <section className="my-24">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="text-center p-10 bg-card border rounded-lg"
+          >
+            <Navigation className="h-12 w-12 mx-auto text-primary mb-4" />
+            <h2 className="text-3xl font-bold mb-4">Explore Azoya</h2>
+            <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Find out more about our mission, check out our simple pricing, or get in touch with our team.
+            </p>
+            <div className="flex justify-center gap-4">
+              <Button asChild variant="outline">
+                <Link href="/about">About Us</Link>
+              </Button>
+              <Button asChild variant="outline">
+                <Link href="/pricing">Pricing</Link>
+              </Button>
+              <Button asChild variant="outline">
+                <Link href="/contact">Contact</Link>
+              </Button>
+            </div>
+          </motion.div>
+        </section>
       </div>
     </div>
   );
