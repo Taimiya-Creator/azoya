@@ -16,6 +16,7 @@ import { Mail, Phone, MapPin } from "lucide-react";
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email." }),
+  subject: z.string().min(5, { message: "Subject must be at least 5 characters." }),
   message: z.string().min(10, { message: "Message must be at least 10 characters." }),
 });
 
@@ -26,15 +27,21 @@ export default function ContactPage() {
     defaultValues: {
       name: "",
       email: "",
+      subject: "",
       message: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    const mailtoLink = `mailto:taimiyaamjad0@gmail.com?subject=${encodeURIComponent(
+      values.subject
+    )}&body=${encodeURIComponent(`Name: ${values.name}\nEmail: ${values.email}\n\nMessage:\n${values.message}`)}`;
+    
+    window.location.href = mailtoLink;
+
     toast({
-      title: "Message Sent!",
-      description: "Thanks for reaching out. We'll get back to you soon.",
+      title: "Opening Email Client",
+      description: "Please complete sending the email in your email client.",
     });
     form.reset();
   }
@@ -92,6 +99,19 @@ export default function ContactPage() {
                         <FormLabel>Email Address</FormLabel>
                         <FormControl>
                           <Input placeholder="you@example.com" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                   <FormField
+                    control={form.control}
+                    name="subject"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Subject</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Inquiry about..." {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

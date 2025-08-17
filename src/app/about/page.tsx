@@ -11,16 +11,9 @@ export default function AboutPage() {
     {
       name: "Taimiya Amjad",
       role: "Founder & CEO",
-      bio: "The visionary behind Azoya, leading the charge in AI-driven web development.",
+      bio: "The visionary behind Azoya, leading the charge in AI-driven web development and designing the generative core that makes instant websites a reality.",
       avatar: "https://placehold.co/100x100.png",
       dataAiHint: "professional portrait"
-    },
-    {
-      name: "Zenova",
-      role: "Lead AI Architect",
-      bio: "The brilliant mind designing the generative core of Azoya, making instant websites a reality.",
-      avatar: "https://placehold.co/100x100.png",
-      dataAiHint: "futuristic robot"
     },
   ];
 
@@ -79,16 +72,16 @@ export default function AboutPage() {
         {/* Team Section */}
         <div className="text-center mb-20">
           <h2 className="text-3xl md:text-4xl font-bold">Meet the Team</h2>
-          <p className="mt-2 max-w-2xl mx-auto text-muted-foreground">The minds behind the magic.</p>
+          <p className="mt-2 max-w-2xl mx-auto text-muted-foreground">The mind behind the magic.</p>
           <motion.div
             variants={cardVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
-            className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-2"
+            className="mt-12 grid gap-8 sm:grid-cols-1 lg:grid-cols-1 justify-center"
           >
             {teamMembers.map((member, index) => (
-              <motion.div key={index} variants={itemVariants} className="bg-card p-6 rounded-lg shadow-sm border text-center">
+              <motion.div key={index} variants={itemVariants} className="bg-card p-6 rounded-lg shadow-sm border text-center max-w-md mx-auto">
                 <img
                   className="w-24 h-24 mx-auto rounded-full"
                   src={member.avatar}
