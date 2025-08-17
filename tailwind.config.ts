@@ -94,7 +94,7 @@ export default {
       },
       backgroundImage: {
         'grid-zinc-200/50': "linear-gradient(white 1px, transparent 1px), linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, rgb(244 244 245 / 0.4) 1px, transparent 1px), linear-gradient(to right, rgb(244 244 245 / 0.4) 1px, transparent 1px)",
-        'grid-zinc-800/50': "linear-gradient(black 1px, transparent 1px), linear-gradient(to right, black 1px, transparent 1px), linear-gradient(to bottom, rgb(39 39 42 / 0.4) 1px, transparent 1px), linear-gradient(to right, rgb(39 39 42 / 0.4) 1px, transparent 1px)"
+        'grid-zinc-800/50': "linear-gradient(hsl(var(--background)) 1px, transparent 1px), linear-gradient(to right, hsl(var(--background)) 1px, transparent 1px), linear-gradient(to bottom, hsl(var(--border)) 1px, transparent 1px), linear-gradient(to right, hsl(var(--border)) 1px, transparent 1px)"
       },
        backgroundSize: {
         'grid': '40px 40px, 40px 40px, 20px 20px, 20px 20px',

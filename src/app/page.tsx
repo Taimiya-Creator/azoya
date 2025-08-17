@@ -87,7 +87,7 @@ export default function Home() {
   const srcDoc = generatedCode ? `<html><head><style>${generatedCode.css}</style></head><body>${generatedCode.html}<script>${generatedCode.javascript || ''}</script></body></html>` : '';
 
   return (
-    <div className="min-h-screen bg-grid-zinc-200/50 dark:bg-grid-zinc-800/50">
+    <div className="min-h-screen bg-background dark:bg-grid-zinc-800/50">
       <div className="container mx-auto p-4 md:p-8">
         <motion.header 
           initial={{ opacity: 0, y: -20 }}
@@ -232,7 +232,7 @@ export default function Home() {
               </motion.div>
             )}
             </AnimatePresence>
-          </section>
+          </motion.section>
         </main>
       </div>
     </div>
