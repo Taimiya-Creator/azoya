@@ -27,8 +27,9 @@ export default function RootLayout({
             <main className="flex-grow">
               {children}
             </main>
-            <footer className="text-center p-4 text-muted-foreground text-sm">
-              Designed by Zenova (Taimiya Amjad)
+            <footer className="text-center p-4 text-muted-foreground text-sm space-y-1">
+              <p>© 2025 Azoya. All Rights Reserved.</p>
+              <p>Designed by Zenova (Taimiya Amjad)</p>
             </footer>
           </div>
         </AuthProvider>

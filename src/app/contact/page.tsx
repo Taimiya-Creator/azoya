@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -160,23 +160,8 @@ export default function ContactPage() {
                 <Phone className="h-6 w-6 text-primary" />
                 <span>+1 (555) 123-4567</span>
               </div>
-              <div className="flex items-start gap-4">
-                <MapPin className="h-6 w-6 text-primary mt-1" />
-                <span>
-                  123 Innovation Drive
-                  <br />
-                  Tech City, 12345
-                </span>
-              </div>
             </div>
           </div>
-           <div className="bg-card p-6 rounded-lg border">
-             <h3 className="text-xl font-semibold mb-4">Office Hours</h3>
-             <div className="space-y-2 text-muted-foreground">
-                <p>Monday - Friday: 9:00 AM - 5:00 PM</p>
-                <p>Saturday & Sunday: Closed</p>
-             </div>
-           </div>
         </motion.div>
       </div>
     </div>
