@@ -3,15 +3,16 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
-// Your web app's Firebase configuration
+// Your web app's Firebase configuration - Hardcoded for Vercel deployment
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  apiKey: "AIzaSyDf9McCZUd2rAgb6iye14IPqeZh7LSyi_I",
+  authDomain: "projecg-e76f5.firebaseapp.com",
+  projectId: "projecg-e76f5",
+  storageBucket: "projecg-e76f5.appspot.com",
+  messagingSenderId: "725481441769",
+  appId: "1:725481441769:web:a71ffe09d4b298a44e2378"
 };
+
 
 // Initialize Firebase
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
